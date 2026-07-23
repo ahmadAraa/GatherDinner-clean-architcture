@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="GatherDinner.Api/GatherDinner.Api.csproj" />
+  <Project Path="GatherDinner.Application/GatherDinner.Application.csproj" />
+  <Project Path="GatherDinner.Contracts/GatherDinner.Contracts.csproj" />
+  <Project Path="GatherDinner.Domain/GatherDinner.Domain.csproj" />
+  <Project Path="GatherDinner.Infrastructure/GatherDinner.Infrastructure.csproj" />
+</Solution>
