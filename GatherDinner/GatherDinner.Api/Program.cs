@@ -2,7 +2,6 @@ using GatherDinner.Contracts.Authentication;
 using GatherDinner.Application;
 using GatherDinner.Infrastructure;
 using Scalar.AspNetCore;
-using GatherDinner.Api.Middleware;
 using GatherDinner.Api.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using GatherDinner.Api.Errors;
@@ -30,7 +29,7 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 app.UseExceptionHandler("/error");
-//app.UseMiddleware<ErrorHandlingMiddleware>();
+
 
 app.UseHttpsRedirection();
 app.MapControllers();

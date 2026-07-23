@@ -1,3 +1,4 @@
+using GatherDinner.Application.Common.Errors;
 using GatherDinner.Application.Common.Interfaces.Authentication;
 using GatherDinner.Application.Common.Interfaces.Presistence;
 using GatherDinner.Domain.Entities;
@@ -40,7 +41,7 @@ public class AuthService : IAuthService
          //1-Validate the user exists in the database
         if(_userRepository.GetUserByEmail(email) is not null)
         {
-            throw new Exception("User with given email already Exists");
+            throw new DuplicateEmailExeption();
         }
         //create user (Generate Unique ID) and Presist the user to the database
         var user = new User()
