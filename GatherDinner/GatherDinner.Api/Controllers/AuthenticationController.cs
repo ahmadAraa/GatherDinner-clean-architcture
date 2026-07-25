@@ -1,56 +1,59 @@
 using GatherDinner.Api.Filters;
+using GatherDinner.Application.Authentication.Commands;
+using GatherDinner.Application.Authentication.Queries.Login;
+
 using GatherDinner.Contracts.Authentication;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GatherDinner.Contracts.Authentication;
+namespace GatherDinner.Api.Controllers;
 
 [ApiController]
 [Route("auth")]
 
 public class AuthenticationController : ControllerBase
 {
-    private readonly IAuthService _authenticationService;
+    private readonly IMediator _mediator;
+  
 
-    public AuthenticationController(IAuthService authenticationService)
+    public AuthenticationController(IMediator mediator)
     {
-        _authenticationService = authenticationService;
+        _mediator = mediator;
+      
     }
 
     [HttpPost("register")]
-    public IActionResult Register(RegisterRequest request)
+    public async Task<IActionResult> Register(RegisterRequest request)
     {
-      
-        var authResponse = _authenticationService.Register(
-            request.FirstName,
-            request.LastName,
-            request.Email,
-            request.Password);
+        var command = new RegisterCommand(request.FirstName, request.LastName, request.Email, request.Password);
 
+        AuthenticationResult authResult = await _mediator.Send(command);
 
         var response = new AuthenticationResponse(
-            authResponse.User.Id,
-            authResponse.User.FirstName,
-            authResponse.User.LastName,
-            authResponse.User.Email,
-            authResponse.Token
+            authResult.User.Id,
+            authResult.User.FirstName,
+            authResult.User.LastName,
+            authResult.User.Email,
+            authResult.Token
         );
+
         return Ok(response);
-        
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginRequest request)
+    public async Task<IActionResult> Login(LoginRequest request)
     {
-        var authResponse = _authenticationService.Login(
-            request.Email,
-            request.Password);
+        var query = new  LoginQuery(request.Email, request.Password);
+        AuthenticationResult authResult = await _mediator.Send(query);
+
         var response = new AuthenticationResponse(
-            authResponse.User.Id,
-            authResponse.User.FirstName,
-            authResponse.User.LastName,
-            authResponse.User.Email,
-            authResponse.Token
+            authResult.User.Id,
+            authResult.User.FirstName,
+            authResult.User.LastName,
+            authResult.User.Email,
+            authResult.Token
         );
-        return Ok(authResponse);
+
+        return Ok(response);
     }
 }

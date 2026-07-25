@@ -1,6 +1,6 @@
 using GatherDinner.Domain.Entities;
 
-public record AuthenticationResponse(
+public record AuthenticationResult(
     User User,
     string Token
     );
