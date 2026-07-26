@@ -1,23 +1,16 @@
-using GatherDinner.Contracts.Authentication;
+using GatherDinner.Api;
 using GatherDinner.Application;
 using GatherDinner.Infrastructure;
 using Scalar.AspNetCore;
-using GatherDinner.Api.Filters;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
-using GatherDinner.Api.Errors;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddOpenApi();
-// builder.Services.AddControllers(options =>
-// {
-//     options.Filters.Add<ErrorHandlingFilterAttribute>();
-// });
-builder.Services.AddControllers();
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddSingleton<ProblemDetailsFactory,GatherDinnerProblemDetailsFactory>();
+builder.Services
+    .AddPresentation()
+    .AddApplication()
+    .AddInfrastructure(builder.Configuration);
 
 
 var app = builder.Build();

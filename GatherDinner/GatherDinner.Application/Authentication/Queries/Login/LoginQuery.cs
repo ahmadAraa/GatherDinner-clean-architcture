@@ -1,3 +1,4 @@
+using GatherDinner.Application.Authentication.Common;
 using GatherDinner.Application.Common;
 using MediatR;
 

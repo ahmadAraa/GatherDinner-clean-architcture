@@ -1,11 +1,8 @@
+using GatherDinner.Application.Authentication.Common;
 using GatherDinner.Application.Common.Errors;
 using GatherDinner.Application.Common.Interfaces.Authentication;
 using GatherDinner.Application.Common.Interfaces.Presistence;
-
 using GatherDinner.Domain.Entities;
-using MediatR;
-
-
 using MediatR;
 
 namespace GatherDinner.Application.Authentication.Queries.Login
@@ -31,11 +28,11 @@ namespace GatherDinner.Application.Authentication.Queries.Login
             }
             var token = _jwtTokenGenerator.GenerateToken(user);
 
-           return new AuthenticationResult(
-            user,
-            token
-        );
-    }
+            return new AuthenticationResult(
+             user,
+             token
+         );
+        }
 
     }
 }
