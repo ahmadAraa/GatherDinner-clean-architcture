@@ -1,7 +1,7 @@
-using GatherDinner.Api.Filters;
+using ErrorOr;
 using GatherDinner.Application.Authentication.Commands;
+using GatherDinner.Application.Authentication.Common;
 using GatherDinner.Application.Authentication.Queries.Login;
-
 using GatherDinner.Contracts.Authentication;
 using MapsterMapper;
 using MediatR;
@@ -9,13 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GatherDinner.Api.Controllers;
 
-[ApiController]
 [Route("auth")]
-
-public class AuthenticationController : ControllerBase
+public class AuthenticationController : ApiController
 {
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
+
     public AuthenticationController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
@@ -27,11 +26,11 @@ public class AuthenticationController : ControllerBase
     {
         var command = _mapper.Map<RegisterCommand>(request);
 
-        AuthenticationResult authResult = await _mediator.Send(command);
+        ErrorOr<AuthenticationResult> authResult = await _mediator.Send(command);
 
-        var response = _mapper.Map<AuthenticationResponse>(authResult);
-
-        return Ok(response);
+        return authResult.Match(
+            authResult => Ok(_mapper.Map<AuthenticationResponse>(authResult)),
+            errors => Problem(errors));
     }
 
     [HttpPost("login")]
@@ -39,10 +38,10 @@ public class AuthenticationController : ControllerBase
     {
         var query = _mapper.Map<LoginQuery>(request);
 
-        AuthenticationReustlt authResult = await _mediator.Send(query);
+        ErrorOr<AuthenticationResult> authResult = await _mediator.Send(query);
 
-        var response = _mapper.Map<AuthenticationResponse>(authResult);
-
-        return Ok(response);
+        return authResult.Match(
+            authResult => Ok(_mapper.Map<AuthenticationResponse>(authResult)),
+            errors => Problem(errors));
     }
 }
