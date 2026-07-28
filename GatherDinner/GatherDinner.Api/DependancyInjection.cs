@@ -1,8 +1,6 @@
 using System.Reflection;
-using GatherDinner.Api.Errors;
 using Mapster;
 using MapsterMapper;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace GatherDinner.Api;
 
@@ -11,7 +9,6 @@ public static class DependencyInjection
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
         services.AddControllers();
-        services.AddSingleton<ProblemDetailsFactory, GatherDinnerProblemDetailsFactory>();
         services.AddMappings();
         return services;
     }
